@@ -1,0 +1,63 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Version control and CI/CD
+.git/
+.github/
+.gitignore
+azure-deployment/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Azure Functions
+local.settings.json
+.python_packages/
+.funcignore
+
+# Documentation and dev files
+README.md
+*.md
+.env
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# Claude
+.claude

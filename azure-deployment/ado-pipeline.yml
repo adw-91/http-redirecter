@@ -1,0 +1,47 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  azureFunctionAppName: 'your-function-app-name'  # Set this to your function app name
+  azureSubscription: 'your-service-connection'     # Set this to your Azure service connection name
+  pythonVersion: '3.12'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UsePythonVersion@0
+    displayName: 'Use Python $(pythonVersion)'
+    inputs:
+      versionSpec: '$(pythonVersion)'
+
+  - script: |
+      mkdir -p staging
+      cp function_app.py host.json requirements.txt staging/
+    displayName: 'Stage function app files'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r staging/requirements.txt --target="staging/.python_packages/lib/site-packages"
+    displayName: 'Install dependencies'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive function app'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/staging'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+
+  - task: AzureFunctionApp@2
+    displayName: 'Deploy to Azure Functions'
+    inputs:
+      azureSubscription: '$(azureSubscription)'
+      appType: 'functionAppLinux'
+      appName: '$(azureFunctionAppName)'
+      package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      runtimeStack: 'PYTHON|$(pythonVersion)'
+      deploymentMethod: 'auto'
