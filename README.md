@@ -120,6 +120,8 @@ Navigate to **Function App > Settings > Custom domains** and select **Add custom
 
 For apex/root domains, an **A** record with the Function App's IP address is used instead of a CNAME. The TXT record for root domains uses `asuid` as the host name. Consider using Azure DNS if your provider doesn't support ALIAS/ANAME records for root domains.
 
+Note: **A** record entries are only supported on the Premium SKU due to Function Apps using dynamic IP allocation for Consumption plans. 
+
 ### 8. Configure SSL
 
 Add an SSL certificate for the custom domain via Settings > Certificate. Options include:
